@@ -1,0 +1,26 @@
+﻿@page "/"
+@using System.Net.Http.Json
+@using global::Shared
+
+@if (Customers != null)
+{
+    <ul>
+        @foreach (var customer in Customers)
+        {
+            <li>@customer.Name - @customer.Email</li>
+        }
+    </ul>
+}
+
+@code {
+    Customer[] Customers { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        string baseUrl = "https://localhost:7003";
+        using (var http = new HttpClient())
+        {
+            Customers = await http.GetFromJsonAsync<Customer[]>($"{baseUrl}/customers");
+        }
+    }
+}
