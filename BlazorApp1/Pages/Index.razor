@@ -1,9 +1,10 @@
 ﻿@page "/"
 @using System.Net.Http.Json
+@using BlazorApp1.Services
 @using global::Shared
-@inject HttpClient HttpClient
+@inject CustomersService CustomersService
 
-@if (Customers != null)
+@if (Customers.Any())
 {
     <ul>
         @foreach (var customer in Customers)
@@ -14,10 +15,10 @@
 }
 
 @code {
-    Customer[] Customers { get; set; }
+    Customer[] Customers { get; set; } = Array.Empty<Customer>();
 
     protected override async Task OnInitializedAsync()
     {
-        Customers = await HttpClient.GetFromJsonAsync<Customer[]>($"customers");
+        Customers = await CustomersService.GetCustomers();
     }
 }
