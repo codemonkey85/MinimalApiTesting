@@ -7,6 +7,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
+builder.Services.AddHttpClient("ServerAPI", client => client.BaseAddress = new Uri("https://localhost:7003"));
+
+// Supply HttpClient instances that include access tokens when making requests to the server project
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("ServerAPI"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

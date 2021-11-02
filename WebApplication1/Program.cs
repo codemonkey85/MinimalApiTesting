@@ -7,15 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<HelloService>(new HelloService());
 builder.Services.AddScoped<AppDbContext>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase(nameof(AppDbContext)));
-
-//var dbContext = builder.Services.BuildServiceProvider().GetService<AppDbContext>();
+builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase(nameof(AppDbContext)));
 
 var app = builder.Build();
 
-// var dbContext = app.Services.GetRequiredService<AppDbContext>();
-// var dbContext = app.Services.GetService<AppDbContext>();
 var dbContext = app.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
 
 app.MapGet("/", () => "Hello World!");
